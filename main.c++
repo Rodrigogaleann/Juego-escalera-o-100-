@@ -1,57 +1,66 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
-#include <cstdlib>
-#include <ctime>
-#include <vector>
 #include <string>
+
 using namespace std;
-#include "headerUno.h"  // Header para funcion mostrar menu.
-#include "calcularReglas.h" // Header para las reglas, también contiene la función dibujar dados.
-#include "modoManual.h" // Header para modo manual.
-//#include "modoUnJugador.h" // Header para modo un jugador.
-#include "mostrarReglamento.h" // Header para mostrar reglamento.
+#include "FUNCIONES.h"
+#include "calcularReglas.h"
+#include "mostrarReglamento.h"
+#include "modoDosJugadores.h"
+#include "mostrarReglamento.h"
+
+#include "mostrarPuntacionAlta.h"
 
 int main()
 {
-    srand(time(NULL));  // Ejecutar semilla para números aleatorios de los dados(elementos del vector).
-    int opcion=1; // Poner la opción en uno.
+    srand(time(NULL));
+    const int TAM=6;
 
-    while(opcion != 0)
+    int puntuacionAlta = 0;             // PUNTEROS PARA MOSTAR PUNTUACIÓN MAXIMA
+    string nombrePuntuacionAlta;        // PUNTEROS PARA MOSTRAR PUNTÚACIÓN MÁXIMA
+
+    int opcion=1;
+    int dados[TAM]= {1,2,3,4,5,6};
+    while(opcion!=0)
     {
-        mostrarMenu(); // función que muestra el menú del juego.
-        cin >> opcion;
-        switch(opcion)  // Desplegando con un switch cada opción disponible que utilizaremos llamando funciones.
+        mostrarMenu();
+        cin>>opcion;
+        switch (opcion)
         {
         case 1:
-            //modoUnJugador();
+            modoUnjugador(dados, TAM, &puntuacionAlta, &nombrePuntuacionAlta);
+            cargarVectorAleatorio(dados, TAM);
+            mostrarVector(dados, TAM);
+            sumarLanzamiento(dados, TAM);
             break;
+
         case 2:
-
+            modoDosJugadores(&puntuacionAlta, &nombrePuntuacionAlta); // Agregué el modo Dos jugadores con el header que contiene calcular reglas.
             break;
+
         case 3:
+            modoManual(dados, TAM, &puntuacionAlta, &nombrePuntuacionAlta); // función para modo manual.
+            break;
 
-            break;
         case 4:
-            modoManual();
+            mostrarReglamento(); // Función para mostrar reglamento.
             break;
+
         case 5:
-            mostrarReglamento();
+            mostrarPuntuacionAlta(puntuacionAlta, nombrePuntuacionAlta); // Función para mostrar puntuación alta.
             break;
+
         case 0:
-            cout << "Saliendo del programa..."  << endl;
+            cout<<"Saliendo del programa..."<<endl;
             break;
 
         default:
-            cout << "Ingresa una opcion correcta " << endl;
-            //system ("pause");
+            cout<<"Ingrese una opcion correcta."<<endl;
+            //system("pause");
+            cin.ignore();  // Ignorar el carácter de nueva línea restante
+            cin.get();     // Esperar a que el usuario presione Enter
             break;
-        }
-        if (opcion != 0) //// FORMA PARA REEMPLAZAR A SYSTEM ("PAUSE") DE WINDOWS EN LINUX.
-        {
-            cout << "Presiona Enter para continuar..." << endl;
-            cin.ignore();  // Ignorar el carácter de nueva línea restante.
-            cin.get();     // Esperar a que el usuario presione Enter.
         }
     }
     return 0;

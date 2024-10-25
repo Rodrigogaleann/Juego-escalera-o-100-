@@ -525,10 +525,312 @@ void modoDosJugadores(int* puntuacionAlta, string* nombrePuntuacionAlta) // COMI
         *puntuacionAlta = puntajeTotalDos;
         *nombrePuntuacionAlta = nombreDos;
     }
+```
+## Modo_Manual
 
+En este archivo tipo .h podemos ver que es una función de tipo VOID en la misma se desarrollo del modo manual, cuentas con la interfaz gráfica del modo de un jugador donde muestra el NUMERO DE RONDA, NOMBRE DEL JUGADOR y PUNTAJE OBTENIDO EN CADA RONDA este modo se desarrollo para que los profesores prueben toda las combinaciones de dados posibles sin necesidad de hacer los lanzamientos. Esta función es llamada cuando el usuario aprete la opción de MODO MANUAL .
+
+```C++
+#ifndef MODOMANUAL_H_INCLUDED
+#define MODOMANUAL_H_INCLUDED
+
+#include "calcularReglas.h"
+#include "headerUno.h"
+
+void modoManual();
+
+void modoManual()
+{
+    system("clear"); // Limpiar la consola en linux.
+    // system ("cls"); // limpiar la consola en windows.
+    const int TAM = 6;
+    int dados[TAM] = {1,2,3,4,5,6};
+    int lanzamientos = 3; // numero de lanzamientos.
+    int puntajeTotal = 0;// acumulador de puntaje.
+    int rondas = 0; // contador de rondas.
+    string nombre; // string para ingresar nombre.
+
+    cout << "Ingrese el nombre del jugador: " << endl;
+    cin.ignore();  // ingreso de nombre.
+    getline(cin, nombre); // ingreso de nombre.
+
+    while(puntajeTotal <= 100) // para contar las rondas.
+    {
+        rondas++; // contador de rondas.
+        int maxRonda = 0; // variable que servirá para ubicar la RONDA CON PUNTAJE MÁXIMO.
+        for(int lanzamiento = 1; lanzamiento <= lanzamientos; lanzamiento++) // Tenemos 3 lanzamientos por ronda , sale bucle for.
+        {
+            system ("clear");
+            // system("cls"); // Quitar comentario de esta línea para limpiar consola en Windows.
+
+            cout << "--------------------------------------------------------------------------------" << endl;
+            cout << "TURNO DE: " << nombre << " | " << "RONDA N° " << rondas << " | " << "PUNTAJE TOTAL: " << puntajeTotal << endl;
+            cout << "--------------------------------------------------------------------------------" << endl;
+            cout << "MAXIMO PUNTAJE DE LA RONDA: " << maxRonda << endl;
+            cout << "LANZAMIENTO NÚMERO: " << lanzamiento << endl;
+            cout << "--------------------------------------------------------------------------------" << endl;
+            cout << "--------------------------------------------------------------------------------" << endl;
+            cargarVectorManual(dados, TAM);
+            cout << "--------------------------------------------------------------------------------" << endl;
+            cout << "EL RESULTADO DE LOS DADOS ES: " << endl;
+            mostrarVector(dados,TAM);
+              for (int i = 0; i < TAM; i++)
+                {
+                    dibujarDado(dados[i]);      // Con esta función muestro los dados dibujados.
+                }
+            int reglas = calcularReglas(dados,TAM);
+            cout << "PUNTAJE DEL LANZAMIENTO: " << reglas << " PUNTOS" << endl;
+            cout << "------------------------------------------------------------------------------------" << endl;
+
+
+
+            if (lanzamiento == 1)
+            {
+                maxRonda = reglas;
+            }
+            else if(reglas > maxRonda)   // Lógica para detectar el puntaje máximo entre los 3 lanzamientos de cada ronda.
+            {
+                maxRonda = reglas;
+            }
+
+            if (maxRonda == 100)  // Si se consiguen mil puntos en la RONDA, lo que equivale a hacer una escalera, ganamos la partida en esta ronda.
+            {
+                system("clear");
+                // system("cls"); // Quitar comentario de esta línea para limpiar consola en Windows.
+                cout << "ESCALERA!" << endl;  // Si se detecta la escalera nos vamos a otra pantalla que muestra este cartel , el puntaje , jugador y otros datos.
+                mostrarVector(dados,TAM);
+                  for (int i = 0; i < TAM; ++i)
+                {
+                    dibujarDado(dados[i]);      // Con esta función muestro los dados dibujados.
+                }
+
+                cout << "Cantidad de rondas que tardó en terminar la partida: " << rondas << endl;
+                cout << "JUGADOR: " << nombre << endl;
+                cout << "PUNTAJE: " << maxRonda << endl;
+                cout << "HAS GANADO LA PARTIDA"<< endl;
+                cin.ignore();
+                cin.get();     // Esperar a que el usuario presione Enter
+                // system("pause"); // para windows.
+
+                break;  // No demasiado seguro de esto, este break está puesto acá como un intento de finalizar el juego apenas detecta una escalera.
+            }
+
+            if(reglas == 0)
+            {
+                puntajeTotal = 0;    // Resetear el valor del puntaje Total si obtenemos un sexteto--(6 dados numero 6)
+            }
+
+            if (lanzamiento <= lanzamientos)
+            {
+                cout << "Preparándose para el siguiente lanzamiento..." << endl; // Cartel para dar paso al siguiente lanzamiento.
+                cout << "Presiona Enter para continuar..." << endl;
+                cin.ignore();
+                cin.get();
+            }
+
+        }
+        puntajeTotal += maxRonda;  // Actualizar el puntaje total.
+        if (puntajeTotal >= 100)  // SI el puntaje es mayor o igual a cien, llegamos al final del juego.
+        {
+            system("clear");
+            // system("cls"); // Quitar comentario de esta línea para limpiar consola en Windows.
+            cout << "-------------------------------------------------------------------" << endl;
+            cout << "HAS TERMINADO LA PARTIDA"<< endl;
+            cout << "JUGADOR: "<<nombre<< endl;
+            cout << "PUNTAJE: "<<puntajeTotal<<endl;
+            cout << "Cantidad de rondas que tardó en terminar la partida: "<< rondas<< endl;
+            cout << "-------------------------------------------------------------------" << endl;
+            // system("pause"); // para windows.
+            break;
+        }
+        else
+        {
+            system("clear");
+            // system("cls"); // Quitar comentario de esta línea para limpiar consola en Windows.
+            cout << "-------------------------------------------------------------------" << endl;
+            cout << "RONDA N °" << rondas << endl;
+            cout << "JUGADOR: " << nombre << endl;
+            cout << "PUNTAJE: " << puntajeTotal << endl;
+            cout << "-------------------------------------------------------------------" << endl;
+            cin.ignore();
+
+            // system("pause"); // para windows.
+        }
+    }
+} // fin del modo manual.
+
+#endif // MODOMANUAL_H_INCLUDED
 
 } // FIN DE LA FUNCIÓN DEL MODO DOS JUGADORES.
 
 
 #endif // MODODOSJUGADORES_H_INCLUDED
 ```
+
+## Calcular_Reglas
+
+En este archivo tipo .h podemos ver funciones de VOID y ENTERAS en la misma se desarrollo la esencia del juego es una función donde se va analizar cada lanzamiento del jugador para contemplar las reglas del juego con todas las combinaciones de dados posible. Esta función es llamada en cada lanzamiento de cada jugador. También tiene incluida la función de Dibujar dados para que muestre en forma grafica el lanzamiento de cada jugador.
+
+```C++
+#ifndef CALCULARREGLAS_H_INCLUDED
+#define CALCULARREGLAS_H_INCLUDED
+
+void cargarVectorManual(int vec[], int tam); // Función para cargar vector.
+void mostrarVector(int vec[], int tam); // Función para mostrar vector.
+void cargarVectorAleatorio (int vec[], int tam); // Función para cargar vector aleatorio.
+int calcularReglas(int vec[], int tam); // Función para calcular las reglas.
+void dibujarDado(int valor); // Función para dibujar dados.
+
+void dibujarDado(int valor)  // Función para dibujar los dados.
+{
+    switch(valor) // switch para asignar un dibujo de dados a cada elemento del vector.
+    {
+    case 1:
+        cout << "-----" << endl;
+        cout << "|   |" << endl;
+        cout << "| o |" << endl;
+        cout << "|   |" << endl;
+        cout << "-----" << endl;
+        break;
+    case 2:
+        cout << "-----" << endl;
+        cout << "|o  |" << endl;
+        cout << "|   |" << endl;
+        cout << "|  o|" << endl;
+        cout << "-----" << endl;
+        break;
+    case 3:
+        cout << "-----" << endl;
+        cout << "|o  |" << endl;
+        cout << "| o |" << endl;
+        cout << "|  o|" << endl;
+        cout << "-----" << endl;
+        break;
+    case 4:
+        cout << "-----" << endl;
+        cout << "|o o|" << endl;
+        cout << "|   |" << endl;
+        cout << "|o o|" << endl;
+        cout << "-----" << endl;
+        break;
+    case 5:
+        cout << "-----" << endl;
+        cout << "|o o|" << endl;
+        cout << "| o |" << endl;
+        cout << "|o o|" << endl;
+        cout << "-----" << endl;
+        break;
+    case 6:
+        cout << "-----" << endl;
+        cout << "|o o|" << endl;
+        cout << "|o o|" << endl;
+        cout << "|o o|" << endl;
+        cout << "-----" << endl;
+        break;
+    default:
+        cout << "dado no válido" << endl;
+        break;
+    }
+} // Fin de la función para mostrar dados dibujados.
+
+
+void cargarVectorManual(int vec[],int tam) // función para cargar un vector manualmente, será usada para cargar los dados del vector.
+{
+    int i;
+    for (i=0; i < tam; i++)
+    {
+        cout<<"Ingrese el elemento "<<i+1<<" del vector: ";
+        cin>>vec[i];
+    }
+    cout<<"Vector correctamente cargado..."<<endl;
+}  // Fin de cargar vector manual.*/
+
+void mostrarVector (int vec[], int tam) // Función para mostrar los elementos del vector.
+{
+    for(int i = 0; i < tam; i++)
+    {
+        cout << " Dado " << i+1 << " : " << vec[i] << endl;  // Mostrar vector con un for.
+    }
+} // Fin de mostrar vector.
+
+void cargarVectorAleatorio (int vec[], int tam) // Función para cargar vector aleatorio.
+{
+    for(int i = 0; i <= tam; i++)
+    {
+        vec[i] = (rand()% 6 + 1);  // Esta línea de código permite asignar números aleatorios(hasta 6) a cada elemento del vector.
+    }
+} // fin de cargar vector aleatorio.
+
+int calcularReglas(int vec[], int tam) // Comienzo de la función para calcular reglas.
+{
+    bool todosIguales = true;       // Bandera para detectar si todos los elementos de mi vector son iguales.
+    int primerElemento = vec[0];    // Definir que el primer elemento del vector es el vector en posición cero. // (Esto es para buscar los sextetos)
+
+    for (int i = 0; i < tam; i++) // Recorrer el vector en tdos sus elementos.
+    {
+        if (vec[i] != primerElemento)  //SI el valor de cualquier elemento no es igual a mi primer elemento, ya no se cumple mi bandera.
+        {
+            todosIguales = false;  // con está lógica tengo definido si todos los elementos del vector van a ser iguales o no.
+            break;
+        }
+    }
+
+    // A)Encontrar los sextetos:
+
+    if (todosIguales && primerElemento != 6)   // Si todos los dados son iguales Y el dado NO es igual a SEIS:
+    {
+        cout << "SEXTETO" << endl;
+        return primerElemento * 10;         // MULTIPLICO EL VALOR DEL DADO X 10. PRIMERA JUGADA DEL JUEGO. SEXTETO.
+    }
+    else if(todosIguales && primerElemento == 6)   // Si todos los dados son iguales pero el dado es SEIS:
+    {
+        cout << "SEXTETO6 -- " << endl;
+        cout << "Se resetea el puntaje total a 0 " << endl;
+        return primerElemento * 0;          // MULTIPLICO EL VALOR DEL DADO X 0. SEGUNDA (JUGADA?) DEL JUEGO. SEXTETO--, RESETEA EL PUNTAJE TOTAL A 0.
+    }
+
+    // B)Encontrar la escalera:
+
+    else
+    {
+        int frecuencia[tam] = {0}; // Creaar un vector de frecuencias para contar la cantidad de veces que aparece cada número.
+
+        for (int i = 0; i < tam; i++)
+        {
+            if (vec[i] >= 1 && vec[i] <= tam)
+            {
+                frecuencia[vec[i] - 1]++; // Contar la frecuencia de cada número en el vector.
+            }
+        }
+
+        bool escalera = true;  // Bandera para detectar la escalera.
+        for (int i = 0; i < tam; i++)
+        {
+            if (frecuencia[i] != 1)      // Verificar si cada número del 1 al 6 aparece una vez.
+            {
+                escalera = false; // Si algún número no aparece una vez, NO es una escalera.
+                break;  // CIERTAS dudas sobre si el uso de este break está bien o si está de mas.
+            }
+        }
+
+        if (escalera)  // // Si encontramos una escalera, el jugador gana la partida.
+        {
+
+            return 100; // Puntaje alto para indicar que el jugador ha ganado.
+        }
+
+        //C) Sumar los dados cuando no se produce ninguna jugada especial:
+
+        else
+        {
+            int suma = 0;
+            for (int i = 0; i < tam; i++)
+            {
+                suma += vec[i]; // Suma de dados "normal".
+            }
+            return suma;
+        }
+    }
+}   // Fin de la función para definir las jugadas.
+
+#endif // CALCULARREGLAS_H_INCLUDED

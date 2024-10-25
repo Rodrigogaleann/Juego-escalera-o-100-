@@ -21,7 +21,9 @@ Despues de cada ronda se mostrara el mejor puntaje que se obtuvo y el nombre del
 ***ESCALERA***: Felicitaciones !! ganaste el juego, en este caso al sacar en los 6 dados numeros distintos automaticamente sumas 100 punto por lo que se da ganada la partida.
 
 
-## CODIGO
+# CODIGO
+
+## Main
 
 En este archivo tipo C++ encontramos trasfondo del menú con todas las opciones disponible del juego, con funciones pasadas por parámetro y por referencias.
 Algunas funciones son de tipo VOID y otras de tipo ENTERAS.
@@ -135,7 +137,7 @@ void mostrarReglamento()  // Función extra para mostrar el reglamento del juego
 #endif // HEADERUNO_H_INCLUDED
 ```
 
-#Modo_un_jugador
+# Modo_un_jugador
 
 En este archivo tipo .h podemos ver que es una función de tipo VOID en la misma se desarrollo del modo un jugador, cuentas con la interfaz gráfica donde muestra el NUMERO DE RONDA, NOMBRE DEL JUGADOR y PUNTAJE OBTENIDO, cuando el usuario llegue a 100 puntos ganara. Esta función es llamada cuando el usuario aprete la opción de MODO UN JUGADOR.
 
